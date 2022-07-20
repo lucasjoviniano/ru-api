@@ -13,6 +13,7 @@ class RUService {
         const indexes: number[] = []
 
         try {
+            // Argumentos utilizados para funcionar corretamente no Heroku.
             const browser = await puppeteer.launch({
                 args: [
                     '--no-sandbox',
@@ -78,6 +79,7 @@ class RUService {
         const indexes: number[] = []
 
         try {
+            // Argumentos utilizados para funcionar corretamente no Heroku.
             const browser = await puppeteer.launch({
                 args: [
                     '--no-sandbox',

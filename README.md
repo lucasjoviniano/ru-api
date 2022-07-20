@@ -1,6 +1,6 @@
 # RU API UFV
 
-API REST feita para expor o cardápio dos Restaurantes Universitários da UFV em forma de API. O app foi feito utilizando [NodeJS](https://nodejs.org/en/) e a raspagem de dadosfoi feita utilizando a biblioteca [Puppeteer](https://github.com/puppeteer/puppeteer).
+API REST feita para expor o cardápio dos Restaurantes Universitários da UFV em forma de API. O app foi feito utilizando [NodeJS](https://nodejs.org/en/) e a raspagem de dados foi feita utilizando a biblioteca [Puppeteer](https://github.com/puppeteer/puppeteer).
 
 > **IMPORTANTE:** Projeto feito para fins didáticos.
 

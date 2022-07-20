@@ -23,6 +23,9 @@ app.get("/", async (request: Request, response: Response) => {
     const service = new RUService()
     let vicosa: Meal[] | undefined = []
     let crp: Meal[] | undefined = []
+
+    // Gambiarra feita para caso a página demore a carregar
+    // TODO: Aumentar tempo de espera do Puppeteer
     do {
         vicosa = await service.campusVicosa("https://cardapio.ufv.br/");
     } while (vicosa?.length === 0)
