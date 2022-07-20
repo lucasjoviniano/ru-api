@@ -1,5 +1,4 @@
 import cheerio from 'cheerio';
-import { index } from 'cheerio/lib/api/traversing';
 import * as puppeteer from 'puppeteer';
 
 enum Refeicao {
@@ -9,36 +8,15 @@ enum Refeicao {
     Alternativo = "Lanche Alternativo"
 }
 
-type CafeDaManha = {
+type Meal = {
     'tipo': string,
-    'mingau'?: string,
-    'fruta'?: string,
-    'outros': [string]
-}
-
-type AlmocoOuJanta = {
-    'tipo': string,
-    'salada': [string],
-    'prato_principal': string,
-    'vegana': string,
-    'vegetariana': string,
-    'guarnicao': string,
-    'acompanhamento': string,
-    'sobremesa': string,
-    'refresco': string
-}
-
-type Lanche = {
-    'tipo': string,
-    'fruta': string,
-    'sobremesa': string,
-    'recheio_de_pao': string,
-    'outros': [string]
+    'cardapio': string[]
 }
 
 class RUService {
-    public async scraping(url: string) {
-        let meals: string[][][] = []
+    public async campusVicosa(url: string) {
+        const meals: string[][][] = []
+        const json: Meal[] = []
         const indexes: number[] = []
 
         try {
@@ -79,9 +57,68 @@ class RUService {
                 meals.push(n)
             }
 
-            console.log(meals)
+            for (let meal of meals) {
+                const tipo = meal[0][1]
+                const menu = meal.slice(1, meal.length).map(entry => entry[1])
+                json.push({tipo: tipo, cardapio: menu})
+            }
+
+            //console.log(json)
 
             browser.close();
+
+            return json
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    public async campusCRP(url: string) {
+        const meals: string[][][] = []
+        const json: Meal[] = []
+        const indexes: number[] = []
+
+        try {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+
+            await page.goto(url);
+            const pageData = await page.evaluate(() => {
+                return {
+                    html: document.documentElement.innerHTML
+                }
+            })
+
+            const $ = cheerio.load(pageData.html)
+            const element = $('#tbl_info tr td')
+            const labels = element.toArray().map(str => { return $(str).text().trim()}).map(str => str.replace(';', ""))
+
+            const matches = labels.map((value) => {
+                const splitted = value.split(' ').map(str => str.trim())
+                if (value.includes("Almoço") || value.includes("Jantar")) {
+                    indexes.push(labels.indexOf(value))
+                    return ["TIPO", splitted[0]]
+                } else {
+                    return value.split(",").map((x) => x.trim())
+                }
+            })
+
+            for (let i = 1; i <= indexes.length; i++) {
+                const n = matches.slice(indexes[i - 1], indexes[i])
+                meals.push(n)
+            }
+
+            for (let meal of meals) {
+                const tipo = meal[0][1]
+                const menu = meal.slice(1, meal.length).map(entry => entry[1])
+                json.push({tipo: tipo, cardapio: menu})
+            }
+
+            console.log(json)
+
+            browser.close();
+
+            return json
         } catch (error) {
             console.log(error)
         }

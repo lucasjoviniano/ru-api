@@ -1,15 +1,18 @@
 import express, {Request, Response} from 'express';
+import cors from 'cors'
 import RUService from './services/RUService';
+import routes from './routes';
 
 const PORT = 8000;
 
 const app = express();
 
-app.get("/", async (request: Request, response: Response) => {
-    const service = new RUService;
+app.use(cors())
+app.use(express.json())
 
-    const ru = await service.scraping("https://cardapio.ufv.br/");
-    
+app.use(routes)
+
+app.get("/", async (request: Request, response: Response) => {
     return response.json({
         message: `Server Running. ${PORT}`
     });
