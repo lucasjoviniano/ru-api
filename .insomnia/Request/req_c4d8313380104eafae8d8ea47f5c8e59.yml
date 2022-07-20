@@ -1,0 +1,21 @@
+_id: req_c4d8313380104eafae8d8ea47f5c8e59
+type: Request
+parentId: wrk_ec1e9dd483254d22a37bdfc4b2329639
+modified: 1658351995837
+created: 1658351936238
+url: localhost:8000/crp
+name: Rio Paranaiba
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1658351936238
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
