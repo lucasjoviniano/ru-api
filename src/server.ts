@@ -1,6 +1,5 @@
 import express, {Request, Response} from 'express';
 import cors from 'cors'
-import RUService from './services/RUService';
 import routes from './routes';
 
 const PORT = 8000;
