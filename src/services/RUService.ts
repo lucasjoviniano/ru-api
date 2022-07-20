@@ -1,13 +1,6 @@
 import cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 
-enum Refeicao {
-    Cafe = "Café da Manhã",
-    Almoco = "Almoço",
-    Jantar = "Jantar",
-    Alternativo = "Lanche Alternativo"
-}
-
 type Meal = {
     'tipo': string,
     'cardapio': string[]
@@ -34,6 +27,7 @@ class RUService {
             const element = $('#tbl_info tr td')
             const labels = element.toArray().map(str => { return $(str).text().trim()}).filter(value => !(value.includes("RU - I") || value.includes("RU - II") || value.includes("RU III")))
 
+            // Tratamento de dados desnecessário, mas útil caso separemos a resposta no json em componentes da refeição
             const matches = labels.map((value) => {
                 const splitted = value.split(' ').map(str => str.trim())
                 if (value.includes("Cafe")) {
@@ -122,23 +116,6 @@ class RUService {
         } catch (error) {
             console.log(error)
         }
-    }
-
-    checkType(tipo: string): Refeicao {
-        const splitted = tipo.split(":")
-        const value = splitted[1].trim()
-
-        if (value == "Cafe da manhã") {
-            return Refeicao.Cafe
-        } else if (value == "Almoco") {
-            return Refeicao.Almoco
-        } else if (value == "Jantar") {
-            return Refeicao.Jantar
-        } else if (value == "Jantar Alternativo") {
-            return Refeicao.Alternativo
-        }
-
-        throw new Error("Não existe outro tipo de refeição.")
     }
 }
 
