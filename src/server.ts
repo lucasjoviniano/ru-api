@@ -2,9 +2,12 @@ import express, {Request, Response} from 'express';
 import cors from 'cors'
 import routes from './routes';
 import path from 'path';
+import * as dotenv from 'dotenv';
 import RUService from './services/RUService';
 
-const PORT = 8000;
+dotenv.config();
+
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 

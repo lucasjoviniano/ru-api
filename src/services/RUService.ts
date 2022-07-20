@@ -108,7 +108,7 @@ class RUService {
                 json.push({tipo: tipo, cardapio: menu})
             }
 
-            console.log(json)
+            //console.log(json)
 
             browser.close();
 
