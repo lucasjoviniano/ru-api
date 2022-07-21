@@ -4,6 +4,7 @@ import routes from './routes';
 import path from 'path';
 import * as dotenv from 'dotenv';
 import RUService from './services/RUService';
+import type Meal from './models/meal'
 
 dotenv.config();
 
@@ -43,8 +44,3 @@ app.get("/", async (request: Request, response: Response) => {
 });
 
 app.listen(PORT, () => console.log("Server Running."))
-
-type Meal = {
-    'tipo': string,
-    'cardapio': string[]
-}

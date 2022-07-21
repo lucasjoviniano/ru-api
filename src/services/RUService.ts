@@ -1,10 +1,6 @@
 import cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
-
-type Meal = {
-    'tipo': string,
-    'cardapio': string[]
-}
+import type Meal from '../models/meal'
 
 class RUService {
     public async campusVicosa(url: string) {

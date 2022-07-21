@@ -1,12 +1,8 @@
 import express from 'express';
 import RUService from '../services/RUService';
+import type Meal from '../models/meal'
 
 const router = express.Router()
-
-type Meal = {
-    'tipo': string,
-    'cardapio': string[]
-}
 
 router.get("/vicosa", async (request, response) => {
     const service = new RUService()
