@@ -3,30 +3,38 @@ import * as puppeteer from 'puppeteer';
 import type Meal from '../models/meal'
 
 class RUService {
+
+    private async getHtml(url: string) {
+        // Argumentos utilizados para funcionar corretamente no Heroku.
+        const browser = await puppeteer.launch({
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+              ],
+        });
+        const page = await browser.newPage();
+
+        await page.goto(url);
+        await page.waitForSelector('.titulo_composicao')
+        const pageData = await page.evaluate(() => {
+            return {
+                html: document.documentElement.innerHTML
+            }
+        })
+
+        browser.close();
+
+        return pageData.html
+    }
+
     public async campusVicosa(url: string) {
         const meals: string[][][] = []
         const json: Meal[] = []
         const indexes: number[] = []
 
         try {
-            // Argumentos utilizados para funcionar corretamente no Heroku.
-            const browser = await puppeteer.launch({
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                  ],
-            });
-            const page = await browser.newPage();
-
-            await page.goto(url);
-            await page.waitForSelector('.titulo_composicao')
-            const pageData = await page.evaluate(() => {
-                return {
-                    html: document.documentElement.innerHTML
-                }
-            })
-
-            const $ = cheerio.load(pageData.html)
+            const html = await this.getHtml(url)
+            const $ = cheerio.load(html)
             const element = $('#tbl_info tr td')
             const labels = element.toArray().map(str => { return $(str).text().trim()}).filter(value => !(value.includes("RU - I") || value.includes("RU - II") || value.includes("RU III")))
 
@@ -60,10 +68,6 @@ class RUService {
                 json.push({tipo: tipo, cardapio: menu})
             }
 
-            //console.log(json)
-
-            browser.close();
-
             return json
         } catch (error) {
             console.log(error)
@@ -76,24 +80,8 @@ class RUService {
         const indexes: number[] = []
 
         try {
-            // Argumentos utilizados para funcionar corretamente no Heroku.
-            const browser = await puppeteer.launch({
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                  ],
-            });
-            const page = await browser.newPage();
-
-            await page.goto(url);
-            await page.waitForSelector('.titulo_composicao')
-            const pageData = await page.evaluate(() => {
-                return {
-                    html: document.documentElement.innerHTML
-                }
-            })
-
-            const $ = cheerio.load(pageData.html)
+            const html = await this.getHtml(url)
+            const $ = cheerio.load(html)
             const element = $('#tbl_info tr td')
             const labels = element.toArray().map(str => { return $(str).text().trim()}).map(str => str.replace(';', ""))
 
@@ -117,10 +105,6 @@ class RUService {
                 const menu = meal.slice(1, meal.length).map(entry => entry[1])
                 json.push({tipo: tipo, cardapio: menu})
             }
-
-            //console.log(json)
-
-            browser.close();
 
             return json
         } catch (error) {
