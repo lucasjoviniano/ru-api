@@ -1,6 +1,5 @@
 import express from 'express';
 import RUService from '../services/RUService';
-import type Meal from '../models/meal'
 
 const router = express.Router()
 

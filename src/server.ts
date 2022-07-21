@@ -4,7 +4,6 @@ import routes from './routes';
 import path from 'path';
 import * as dotenv from 'dotenv';
 import RUService from './services/RUService';
-import type Meal from './models/meal'
 
 dotenv.config();
 
@@ -22,9 +21,6 @@ app.use(routes)
 
 app.get("/", async (request: Request, response: Response) => {
     const service = new RUService()
-
-    // Gambiarra feita para caso a página demore a carregar
-    // TODO: Aumentar tempo de espera do Puppeteer
 
     const vicosa = await service.campusVicosa("https://cardapio.ufv.br/");
     const crp = await service.campusCRP('https://sisru.crp.ufv.br/cardapioIframe.php')
