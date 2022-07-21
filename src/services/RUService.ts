@@ -19,6 +19,7 @@ class RUService {
             const page = await browser.newPage();
 
             await page.goto(url);
+            await page.waitForSelector('.titulo_composicao')
             const pageData = await page.evaluate(() => {
                 return {
                     html: document.documentElement.innerHTML
@@ -85,6 +86,7 @@ class RUService {
             const page = await browser.newPage();
 
             await page.goto(url);
+            await page.waitForSelector('.titulo_composicao')
             const pageData = await page.evaluate(() => {
                 return {
                     html: document.documentElement.innerHTML

@@ -22,18 +22,12 @@ app.use(routes)
 
 app.get("/", async (request: Request, response: Response) => {
     const service = new RUService()
-    let vicosa: Meal[] | undefined = []
-    let crp: Meal[] | undefined = []
 
     // Gambiarra feita para caso a página demore a carregar
     // TODO: Aumentar tempo de espera do Puppeteer
-    do {
-        vicosa = await service.campusVicosa("https://cardapio.ufv.br/");
-    } while (vicosa?.length === 0)
 
-    do {
-        crp = await service.campusCRP('https://sisru.crp.ufv.br/cardapioIframe.php')
-    } while (crp?.length === 0)
+    const vicosa = await service.campusVicosa("https://cardapio.ufv.br/");
+    const crp = await service.campusCRP('https://sisru.crp.ufv.br/cardapioIframe.php')
     
     const templateValues = {
         vicosa: JSON.stringify(vicosa, undefined, 2),
